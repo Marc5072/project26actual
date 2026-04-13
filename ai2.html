@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Joke Boarding Pass</title>
+    
+    <style>
+        :root {
+            --airline-blue: #1a4f8b;
+            --ticket-gold: #f1c40f;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e0e7ef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* The Boarding Pass Container */
+        .ticket {
+            background: white;
+            width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            border: 2px solid #ccc;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .ticket:active {
+            transform: scale(0.98);
+        }
+
+        .header {
+            background-color: var(--airline-blue);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content {
+            padding: 20px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #joke-text {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #punchline-text {
+            font-weight: bold;
+            color: var(--airline-blue);
+            font-size: 1.3rem;
+            min-height: 1.5em;
+        }
+
+        .footer {
+            border-top: 2px dashed #ccc;
+            padding: 15px;
+            background: #fafafa;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        button {
+            background: var(--airline-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        /* Creative Extra: The Stamp Effect */
+        .stamp {
+            position: absolute;
+            right: 20px;
+            bottom: 60px;
+            border: 4px solid #d32f2f;
+            color: #d32f2f;
+            padding: 5px;
+            border-radius: 10px;
+            transform: rotate(-20sdeg);
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .stamp.show {
+            opacity: 0.4;
+            animation: slam 0.3s ease-out;
+        }
+
+        @keyframes slam {
+            0% { transform: scale(5) rotate(0deg); opacity: 0; }
+            100% { transform: scale(1) rotate(-20deg); opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="color: var(--airline-blue);">Ready for Departure?</h2>
+
+    <div class="ticket" id="ticket">
+        <div class="header">
+            <span>AIR JOKE INT'L</span>
+            <span id="flight-num">FLIGHT: BK202</span>
+        </div>
+        
+        <div class="content">
+            <p id="joke-text">Click the button to generate a travel joke...</p>
+            <p id="punchline-text"></p>
+            <div class="stamp" id="stamp">APPROVED</div>
+        </div>
+
+        <div class="footer">
+            <button onclick="generateJoke()">Issue New Ticket</button>
+            <button onclick="toggleTurbulence()" style="background: #7f8c8d;">Turbulence Mode</button>
+        </div>
+    </div>
+    <br>
+    <br><br>
+
+    <a href="fromScratch.html">Go to Scratch Page</a>
+    <script>
+        const jokes = [
+            { q: "Why did the librarian get kicked off the plane?", a: "Because it was overbooked!" },
+            { q: "Where do mountain climbers keep their money?", a: "In a snow bank!" },
+            { q: "What do you call a person who likes to take pictures of the Eiffel Tower?", a: "A French Fries-er!" },
+            { q: "Why don't aliens visit Earth anymore?", a: "They looked at the reviews. Only one star." },
+            { q: "What do you call a travel agent who can't stop talking?", a: "A tour-guide!" },
+            { q: "Why did the suitcase go to therapy?", a: "It had too much emotional baggage." },
+            { q: "What did the airplane say to the cloud?", a: "Move over, I'm just passing through!" }
+        ];
+
+                function generateJoke() {
+                    const jokeDisplay = document.getElementById('joke-text');
+                    const punchlineDisplay = document.getElementById('punchline-text');
+                    const stamp = document.getElementById('stamp');
+                    const flightNum = document.getElementById('flight-num');
+        
+                    // Reset effects
+                    stamp.classList.remove('show');
+                    punchlineDisplay.innerText = "";
+        
+                    // Randomize Flight Number for flair
+                    flightNum.innerText = "FLIGHT: " + Math.floor(Math.random() * 900 + 100);
+        
+                    // Select random joke
+                    const randomIndex = Math.floor(Math.random() * jokes.length);
+                    jokeDisplay.innerText = jokes[randomIndex].q;
+        
+                    // Delayed punchline and stamp for "loading" effect
+                    setTimeout(() => {
+                        punchlineDisplay.innerText = jokes[randomIndex].a;
+                        stamp.classList.add('show');
+                    }, 1200);
+                }
+        
+                function toggleTurbulence() {
+                    const ticket = document.getElementById('ticket');
+                    // simple visual nudge for "turbulence"
+                    ticket.style.transition = 'transform 0.08s';
+                    ticket.style.transform = 'rotate(1deg)';
+                    setTimeout(() => {
+                        ticket.style.transform = 'rotate(-1deg)';
+                        setTimeout(() => {
+                            ticket.style.transform = '';
+                        }, 100);
+                    }, 80);
+                }
+            </script>
+        </body>
+        </html>
